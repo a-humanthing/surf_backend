@@ -4,6 +4,14 @@ const dotenv = require("dotenv")
 dotenv.config()
 const User = require("../../model/User")
 
+module.exports.verifyOtp = async (req, res, next) => {
+  try {
+    console.log(req.body)
+  } catch (error) {
+    console.log("Otp Verification error ", error)
+  }
+}
+
 module.exports.userRegister = async (req, res) => {
   try {
     console.log(req.body)
@@ -31,12 +39,13 @@ module.exports.userRegister = async (req, res) => {
           id: user._id,
           email,
         },
-        `${process.env.JWTSECRET}`, //proece.env.jwtsecret
+        `${process.env.JWTSECRET}`, //process.env.jwtsecret
         { expiresIn: "24h" }
       )
+
       user.token = token
       user.password = undefined
-      return res.status(200).json(user)
+      return res.status(200).json({ user, token })
     }
   } catch (error) {
     console.log("register error = ", error)
