@@ -30,6 +30,7 @@ const UserSchema = new Schema(
     dob: {
       type: Date,
     },
+    location: { type: String },
     posts: [{ type: Schema.Types.ObjectId, ref: "Post" }],
     services: [{ type: Schema.Types.ObjectId, ref: "Service" }],
     followers: [{ type: Schema.Types.ObjectId, ref: "User" }],
