@@ -23,6 +23,7 @@ module.exports.checkToken = (req, res, next) => {
     req.token = token
     next()
   } else {
+    console.log("type head", typeof header)
     //If header is undefined return Forbidden (403)
     console.log("error in check token")
     return res.status(403).json({ success: false })

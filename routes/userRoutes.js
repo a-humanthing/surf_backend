@@ -4,8 +4,13 @@ const { sendOtp, verifyOtp } = require("../controller/user/otpController")
 const {
   sendProfileCardData,
   sendProfileData,
+  sendUserPosts,
+  sendHomefeeds,
+  sendUserData,
+  followUser,
+  unfollowUser,
 } = require("../controller/user/data")
-const { checkToken } = require("../middleware")
+const { checkToken, verifyJwt } = require("../middleware")
 const router = express.Router()
 
 // const checkToken = (req, res, next) => {
@@ -29,4 +34,9 @@ router.post("/register", userRegister)
 router.post("/login", userLogin)
 router.get("/data", checkToken, sendProfileCardData)
 router.get("/profile", checkToken, sendProfileData)
+router.get("/posts", checkToken, verifyJwt, sendUserPosts)
+router.get("/homefeeds", checkToken, verifyJwt, sendHomefeeds)
+router.get("/:username", checkToken, verifyJwt, sendUserData)
+router.put("/follow/:id", checkToken, verifyJwt, followUser)
+router.put("/unfollow/:id", checkToken, verifyJwt, unfollowUser)
 module.exports = router
