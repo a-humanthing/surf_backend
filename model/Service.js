@@ -3,9 +3,11 @@ const Schema = mongoose.Schema
 
 const serviceSchema = new Schema(
   {
-    name: { type: String, required: true },
+    serviceType: { type: String, required: true },
+    serviceName: { type: String, required: true },
     description: { type: String, required: true },
-    image: { type: String },
+    location: { type: String },
+    range: { type: Number },
   },
   { timestamps: true }
 )

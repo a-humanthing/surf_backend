@@ -80,7 +80,7 @@ module.exports.userLogin = async (req, res) => {
         success: true,
         token,
         id: user._id,
-        name: user.name,
+        username: user.userName,
       })
     } else {
       return res.status(401).json({ success: false })

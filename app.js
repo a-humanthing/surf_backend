@@ -10,6 +10,7 @@ mongoose.set("strictQuery", false)
 mongoose.connect("mongodb://0.0.0.0:27017/surf")
 const userRoutes = require("./routes/userRoutes")
 const postRoutes = require("./routes/postRoutes")
+const serviceRoutes = require("./routes/serviceRoutes")
 
 const db = mongoose.connection
 db.on("error", console.error.bind(console, "mongo connection error"))
@@ -21,9 +22,7 @@ app.use(cors())
 app.use(express.static(path.join(__dirname, "public")))
 app.use("/api/user", userRoutes)
 app.use("/api/post", postRoutes)
-app.get("/", (req, res, next) => {
-  res.send("app started")
-})
+app.use("/api/service", serviceRoutes)
 app.listen(`${process.env.PORT}`, () => {
   console.log(`http://localhost:${process.env.PORT}`)
 })

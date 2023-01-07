@@ -31,7 +31,7 @@ module.exports.sendProfileData = async (req, res, next) => {
       res.status(403).json({ success: false })
     } else {
       const id = authorizedData.id
-      const data = await User.findById(id)
+      const data = await User.findById(id).populate("services")
       data.password = undefined
       res.status(200).json({ success: true, data })
     }
@@ -44,7 +44,6 @@ module.exports.sendUserPosts = async (req, res, next) => {
     path: "posts",
     populate: { path: "userId" },
   })
-  console.log("user = ", user)
   const posts = user.posts
   res.json({ success: true, posts })
 }
