@@ -7,6 +7,6 @@ const { checkToken, verifyJwt } = require("../middleware")
 const router = express.Router()
 
 router.post("/add", checkToken, verifyJwt, addService)
-router.put("/update", checkToken, verifyJwt, updateService)
+router.put("/:serviceId", checkToken, verifyJwt, updateService)
 
 module.exports = router

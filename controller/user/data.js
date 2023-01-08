@@ -66,14 +66,18 @@ module.exports.sendHomefeeds = async (req, res, next) => {
 module.exports.sendUserData = async (req, res, next) => {
   const userid = req.userid
   const { username } = req.params
-  const user = await User.findOne({ userName: username }).populate({
-    path: "posts",
-  })
+  const user = await User.findOne({ userName: username }).populate([
+    {
+      path: "posts",
+      populate: { path: "userId" },
+    },
+    { path: "services" },
+  ])
   // const isFollowingData = await User.findOne({
   //   _id: userid,
   //   following: { $in: [user._id] },
   // })
-  const currentUser = await User.findById(userid)
+  const currentUser = await User.findById(userid).populate({ path: "posts" })
   console.log("isfollow = ", currentUser)
   let isFollowing
   currentUser.following.includes(user._id)

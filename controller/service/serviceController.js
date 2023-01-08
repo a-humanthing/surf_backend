@@ -29,7 +29,9 @@ module.exports.addService = async (req, res, next) => {
 module.exports.updateService = async (req, res, next) => {
   try {
     const userid = req.userid
-    const updateService = await Service.findByIdAndUpdate(ObjectId(userid), {
+    const { serviceId } = req.params
+    console.log("ser id")
+    const updateService = await Service.findByIdAndUpdate(ObjectId(serviceId), {
       ...req.body,
     })
 
