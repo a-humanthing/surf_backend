@@ -89,3 +89,35 @@ module.exports.userLogin = async (req, res) => {
     console.log(error)
   }
 }
+
+module.exports.checkuserExists = async (req, res, next) => {
+  try {
+    const { email } = req.body
+    const user = await User.findOne({ email })
+    console.log("user =", user)
+    if (user) {
+      console.log("exitst")
+      next()
+    } else {
+      console.log("not exists")
+      return res.json({ success: false })
+    }
+  } catch (error) {
+    console.log("async error check user ", error)
+    return res.json({ success: false })
+  }
+}
+
+module.exports.resetPassword = async (req, res, next) => {
+  try {
+    const { email, password } = req.body
+    const user = await User.findOne({ email })
+    if (!user) return res.json({ success: false })
+    const hashedPass = await bcrypt.hash(password, 10)
+    await user.updateOne({ password: hashedPass })
+    res.json({ success: true })
+  } catch (error) {
+    console.log("Asyn error in reseting with error ", error)
+    res.json({ success: false })
+  }
+}

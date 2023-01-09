@@ -1,5 +1,10 @@
 const express = require("express")
-const { userRegister, userLogin } = require("../controller/user/userAuth")
+const {
+  userRegister,
+  userLogin,
+  checkuserExists,
+  resetPassword,
+} = require("../controller/user/userAuth")
 const { sendOtp, verifyOtp } = require("../controller/user/otpController")
 const {
   sendProfileCardData,
@@ -10,7 +15,7 @@ const {
   followUser,
   unfollowUser,
 } = require("../controller/user/data")
-const { checkToken, verifyJwt } = require("../middleware")
+const { checkToken, verifyJwt, sendOtpToEmail } = require("../middleware")
 const router = express.Router()
 
 // const checkToken = (req, res, next) => {
@@ -39,4 +44,6 @@ router.get("/homefeeds", checkToken, verifyJwt, sendHomefeeds)
 router.get("/:username", checkToken, verifyJwt, sendUserData)
 router.put("/follow/:id", checkToken, verifyJwt, followUser)
 router.put("/unfollow/:id", checkToken, verifyJwt, unfollowUser)
+router.post("/checkuser", checkuserExists, sendOtpToEmail)
+router.put("/resetpassword", resetPassword)
 module.exports = router
