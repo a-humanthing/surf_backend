@@ -17,6 +17,18 @@ const postSchema = new Schema(
       type: { type: String },
       coordinates: [Number],
     },
+    likes: [
+      {
+        type: mongoose.Types.ObjectId,
+        ref: "User",
+      },
+    ],
+    comments: [
+      {
+        type: mongoose.Types.ObjectId,
+        ref: "Comment",
+      },
+    ],
   },
   { timestamps: true }
 )

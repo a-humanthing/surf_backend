@@ -1,4 +1,5 @@
 const express = require("express")
+const { likePost } = require("../controller/post/actions")
 const {
   viewPost,
   createPost,
@@ -13,5 +14,6 @@ router.get("/view", checkToken, verifyJwt, viewPost)
 router.post("/create", checkToken, verifyJwt, createPost)
 router.put("/update", checkToken, verifyJwt, updatePost)
 router.delete("/delete", checkToken, verifyJwt, deletePost)
+router.put("/like/:postid", checkToken, verifyJwt, likePost)
 
 module.exports = router
