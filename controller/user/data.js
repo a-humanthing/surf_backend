@@ -32,6 +32,7 @@ module.exports.sendProfileData = async (req, res, next) => {
     } else {
       const id = authorizedData.id
       const data = await User.findById(id).populate("services")
+      console.log("profiledata=", data)
       data.password = undefined
       res.status(200).json({ success: true, data })
     }
@@ -42,8 +43,13 @@ module.exports.sendUserPosts = async (req, res, next) => {
   const userid = req.userid
   const user = await User.findById(ObjectId(userid)).populate({
     path: "posts",
-    populate: { path: "userId" },
+    populate: {
+      path: "userId",
+      path: "comments",
+      populate: { path: "userId" },
+    },
   })
+  console.log("user = ", user)
   const posts = user.posts
   res.json({ success: true, posts })
 }
@@ -69,7 +75,7 @@ module.exports.sendUserData = async (req, res, next) => {
   const user = await User.findOne({ userName: username }).populate([
     {
       path: "posts",
-      populate: { path: "userId" },
+      populate: { path: "userId", path: "comments" },
     },
     { path: "services" },
   ])
@@ -77,7 +83,9 @@ module.exports.sendUserData = async (req, res, next) => {
   //   _id: userid,
   //   following: { $in: [user._id] },
   // })
-  const currentUser = await User.findById(userid).populate({ path: "posts" })
+  const currentUser = await User.findById(userid).populate({
+    path: "posts",
+  })
   console.log("isfollow = ", currentUser)
   let isFollowing
   currentUser.following.includes(user._id)

@@ -8,6 +8,10 @@ const commentSchema = new Schema(
       type: mongoose.Types.ObjectId,
       ref: "User",
     },
+    postId: {
+      type: mongoose.Types.ObjectId,
+      ref: "Post",
+    },
   },
   { timestamps: true }
 )
