@@ -45,8 +45,8 @@ module.exports.sendUserPosts = async (req, res, next) => {
     path: "posts",
     populate: {
       path: "userId",
-      path: "comments",
-      populate: { path: "userId" },
+      // path: "comments",
+      // populate: { path: "userId" },
     },
   })
   console.log("user = ", user)
@@ -75,7 +75,7 @@ module.exports.sendUserData = async (req, res, next) => {
   const user = await User.findOne({ userName: username }).populate([
     {
       path: "posts",
-      populate: { path: "userId", path: "comments" },
+      populate: { path: "userId" }, //, path: "comments"
     },
     { path: "services" },
   ])
