@@ -4,6 +4,7 @@ const {
   userLogin,
   checkuserExists,
   resetPassword,
+  updateProfile,
 } = require("../controller/user/userAuth")
 const { sendOtp, verifyOtp } = require("../controller/user/otpController")
 const {
@@ -39,6 +40,7 @@ router.post("/register", userRegister)
 router.post("/login", userLogin)
 router.get("/data", checkToken, sendProfileCardData)
 router.get("/profile", checkToken, sendProfileData)
+router.put("/profile", checkToken, verifyJwt, updateProfile)
 router.get("/posts", checkToken, verifyJwt, sendUserPosts)
 router.get("/homefeeds", checkToken, verifyJwt, sendHomefeeds)
 router.get("/:username", checkToken, verifyJwt, sendUserData)

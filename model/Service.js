@@ -8,6 +8,7 @@ const serviceSchema = new Schema(
     description: { type: String, required: true },
     location: { type: String },
     range: { type: Number },
+    userId: { type: mongoose.Types.ObjectId, ref: "User" },
   },
   { timestamps: true }
 )

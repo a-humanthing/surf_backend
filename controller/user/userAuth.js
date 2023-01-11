@@ -121,3 +121,21 @@ module.exports.resetPassword = async (req, res, next) => {
     res.json({ success: false })
   }
 }
+
+module.exports.updateProfile = async (req, res, next) => {
+  try {
+    const userid = req.userid
+    const { fullName, userName, phone, dob, url } = req.body
+    const user = await User.findByIdAndUpdate(userid, {
+      fullName,
+      profilePic: url,
+      dob,
+      phone,
+    })
+    console.log("user", user)
+    res.json({ success: true })
+  } catch (error) {
+    console.log("async erro update profile", error)
+    res.json({ success: false })
+  }
+}

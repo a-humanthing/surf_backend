@@ -13,7 +13,7 @@ module.exports.createPost = async (req, res, next) => {
   const post = await Post.create({
     caption,
     image: imgUrl,
-    userId: ObjectId(id),
+    userId: ObjectId(userid),
   })
   post.save()
   const user = await User.updateOne(

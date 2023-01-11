@@ -1,4 +1,5 @@
 const Service = require("../../model/Service")
+const Servicename = require("../../model/Servicename")
 const User = require("../../model/User")
 const { ObjectId } = require("../../util")
 
@@ -6,12 +7,18 @@ module.exports.addService = async (req, res, next) => {
   const userid = req.userid
   const { serviceType, serviceName, description, location, range } = req.body
   try {
+    const serviceNameResponse = await Servicename.findOneAndUpdate(
+      { serviceName: serviceName },
+      { updated: true },
+      { upsert: true }
+    )
     const addService = await Service.create({
       serviceType,
       serviceName,
       description,
       location,
       range,
+      userId: userid,
     })
     addService.save()
     const user = await User.updateOne(
@@ -40,5 +47,25 @@ module.exports.updateService = async (req, res, next) => {
     res.json({ success: true })
   } catch (error) {
     console.log("async err= ", error)
+  }
+}
+
+module.exports.sendServices = async (req, res, next) => {
+  try {
+    const userid = req.userid
+    const services = await Service.find({}).populate("userId")
+    res.json({ success: true, services })
+  } catch (error) {
+    console.log("async err = ", error)
+  }
+}
+
+module.exports.sendServiceName = async (req, res, next) => {
+  try {
+    const userid = req.userid
+    const serviceNameList = await Servicename.find({})
+    res.json({ success: true, serviceNameList })
+  } catch (error) {
+    console.log("async error in fetching service name", error)
   }
 }
