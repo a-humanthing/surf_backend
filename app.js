@@ -11,6 +11,8 @@ mongoose.connect("mongodb://0.0.0.0:27017/surf")
 const userRoutes = require("./routes/userRoutes")
 const postRoutes = require("./routes/postRoutes")
 const serviceRoutes = require("./routes/serviceRoutes")
+const messageRoutes = require("./routes/messageRoutes")
+const conversationRoutes = require("./routes/conversationRoutes")
 
 const db = mongoose.connection
 db.on("error", console.error.bind(console, "mongo connection error"))
@@ -23,6 +25,8 @@ app.use(express.static(path.join(__dirname, "public")))
 app.use("/api/user", userRoutes)
 app.use("/api/post", postRoutes)
 app.use("/api/service", serviceRoutes)
+app.use("/api/conversation", conversationRoutes)
+app.use("/api/message", messageRoutes)
 app.listen(`${process.env.PORT}`, () => {
   console.log(`http://localhost:${process.env.PORT}`)
 })

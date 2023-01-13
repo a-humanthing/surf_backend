@@ -140,3 +140,15 @@ module.exports.unfollowUser = async (req, res, next) => {
     res.json({ success: false })
   }
 }
+
+module.exports.sendUserById = async (req, res, next) => {
+  try {
+    const { userid } = req.params
+    const user = await User.findById(ObjectId(userid))
+    user.password = undefined
+    res.json({ success: true, friend: user })
+  } catch (error) {
+    console.log("error 5", error)
+    res.json({ success: false })
+  }
+}

@@ -15,6 +15,7 @@ const {
   sendUserData,
   followUser,
   unfollowUser,
+  sendUserById,
 } = require("../controller/user/data")
 const { checkToken, verifyJwt, sendOtpToEmail } = require("../middleware")
 const router = express.Router()
@@ -44,8 +45,10 @@ router.put("/profile", checkToken, verifyJwt, updateProfile)
 router.get("/posts", checkToken, verifyJwt, sendUserPosts)
 router.get("/homefeeds", checkToken, verifyJwt, sendHomefeeds)
 router.get("/:username", checkToken, verifyJwt, sendUserData)
+router.get("/id/:userid", checkToken, verifyJwt, sendUserById)
 router.put("/follow/:id", checkToken, verifyJwt, followUser)
 router.put("/unfollow/:id", checkToken, verifyJwt, unfollowUser)
 router.post("/checkuser", checkuserExists, sendOtpToEmail)
 router.put("/resetpassword", resetPassword)
+
 module.exports = router
