@@ -24,3 +24,20 @@ module.exports.sendUserConversations = async (req, res, next) => {
     res.status(500).json({ success: false })
   }
 }
+
+module.exports.findConversation = async (req, res, next) => {
+  try {
+    const { firstUserId, secondUserId } = req.params
+    let conversation = await Conversation.findOne({
+      members: { $all: [firstUserId, secondUserId] },
+    })
+    if (!conversation) {
+      let addConv = new Conversation({ members: [firstUserId, secondUserId] })
+      conversation = await addConv.save()
+    }
+    res.json({ success: true, conversation })
+  } catch (error) {
+    console.log("error find conv ", error)
+    res.status(500).json({ success: false })
+  }
+}
