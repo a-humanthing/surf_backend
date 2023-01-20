@@ -47,6 +47,7 @@ module.exports.updateService = async (req, res, next) => {
     res.json({ success: true })
   } catch (error) {
     console.log("async err= ", error)
+    res.json({ success: false })
   }
 }
 
@@ -57,6 +58,7 @@ module.exports.sendServices = async (req, res, next) => {
     res.json({ success: true, services })
   } catch (error) {
     console.log("async err = ", error)
+    res.json({ success: false })
   }
 }
 
@@ -67,5 +69,17 @@ module.exports.sendServiceName = async (req, res, next) => {
     res.json({ success: true, serviceNameList })
   } catch (error) {
     console.log("async error in fetching service name", error)
+    res.json({ success: false })
+  }
+}
+
+module.exports.sendServiceByLocation = async (req, res, next) => {
+  try {
+    const { location } = req.params
+    const response = await Service.find({ location })
+    res.json({ success: true, services: response })
+  } catch (error) {
+    console.log("async error in fetching service name", error)
+    res.json({ success: false })
   }
 }

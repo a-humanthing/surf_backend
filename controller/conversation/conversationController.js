@@ -41,3 +41,14 @@ module.exports.findConversation = async (req, res, next) => {
     res.status(500).json({ success: false })
   }
 }
+
+module.exports.sendConversationById = async (req, res, next) => {
+  try {
+    const { conversationId } = req.params
+    const conversation = await Conversation.findById(conversationId)
+    res.json({ success: true, conversation })
+  } catch (error) {
+    console.log("error on send conv by id", error)
+    res.status(500).json({ success: false })
+  }
+}
