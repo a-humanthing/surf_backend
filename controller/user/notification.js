@@ -11,7 +11,9 @@ module.exports.sendNotifications = async (req, res, next) => {
       createdAt: {
         $gt: new Date(Date.now() - 15 * 24 * 60 * 60 * 1000),
       },
-    }).populate("userId")
+    })
+      .populate("userId")
+      .sort({ createdAt: -1 })
     const latestPosts = unFIlteredlatestPosts.map((item) => ({
       user: item.userId.userName,
       image: item.image,

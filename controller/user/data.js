@@ -144,6 +144,7 @@ module.exports.unfollowUser = async (req, res, next) => {
 module.exports.sendUserById = async (req, res, next) => {
   try {
     const { userid } = req.params
+    console.log("usid:", userid)
     const user = await User.findById(ObjectId(userid))
     user.password = undefined
     res.json({ success: true, friend: user })
