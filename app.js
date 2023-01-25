@@ -13,6 +13,7 @@ const postRoutes = require("./routes/postRoutes")
 const serviceRoutes = require("./routes/serviceRoutes")
 const messageRoutes = require("./routes/messageRoutes")
 const conversationRoutes = require("./routes/conversationRoutes")
+const storyRoutes = require("./routes/storyRoutes")
 
 const db = mongoose.connection
 db.on("error", console.error.bind(console, "mongo connection error"))
@@ -27,6 +28,7 @@ app.use("/api/post", postRoutes)
 app.use("/api/service", serviceRoutes)
 app.use("/api/conversation", conversationRoutes)
 app.use("/api/message", messageRoutes)
+app.use("/api/story", storyRoutes)
 app.listen(`${process.env.PORT}`, () => {
   console.log(`http://localhost:${process.env.PORT}`)
 })

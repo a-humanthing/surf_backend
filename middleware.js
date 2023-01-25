@@ -16,7 +16,7 @@ module.exports.verifyJwt = (req, res, next) => {
   jwt.verify(req.token, process.env.JWTSECRET, async (err, authorizedData) => {
     if (err) {
       console.log("jwt verification err ", err)
-      return res.json({ success: false })
+      return res.json({ success: false, invalidToken: true })
     } else {
       req.userid = authorizedData.id
       console.log("passed jwt")
