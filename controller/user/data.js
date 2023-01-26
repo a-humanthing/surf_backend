@@ -79,7 +79,7 @@ module.exports.sendUserData = async (req, res, next) => {
   const user = await User.findOne({ userName: username }).populate([
     {
       path: "posts",
-      populate: { path: "userId" }, //, path: "comments"
+      populate: { path: "userId", path: "likes" }, //, path: "comments"
     },
     { path: "services" },
     { path: "followers" },
@@ -92,7 +92,6 @@ module.exports.sendUserData = async (req, res, next) => {
   const currentUser = await User.findById(userid).populate({
     path: "posts",
   })
-  console.log("isfollow = ", currentUser)
   let isFollowing
   currentUser.following.includes(user._id)
     ? (isFollowing = true)
