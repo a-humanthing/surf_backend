@@ -31,7 +31,11 @@ module.exports.sendProfileData = async (req, res, next) => {
       res.status(403).json({ success: false })
     } else {
       const id = authorizedData.id
-      const data = await User.findById(id).populate("services")
+      const data = await User.findById(id).populate([
+        { path: "services" },
+        { path: "followers" },
+        { path: "following" },
+      ])
       console.log("profiledata=", data)
       data.password = undefined
       res.status(200).json({ success: true, data })
@@ -78,6 +82,8 @@ module.exports.sendUserData = async (req, res, next) => {
       populate: { path: "userId" }, //, path: "comments"
     },
     { path: "services" },
+    { path: "followers" },
+    { path: "following" },
   ])
   // const isFollowingData = await User.findOne({
   //   _id: userid,
