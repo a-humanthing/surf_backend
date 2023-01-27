@@ -37,13 +37,11 @@ module.exports.updateService = async (req, res, next) => {
   try {
     const userid = req.userid
     const { serviceId } = req.params
-    console.log("ser id")
     const updateService = await Service.findByIdAndUpdate(ObjectId(serviceId), {
       ...req.body,
     })
 
     //here was the error have to send the service id or find inner data frm user
-    console.log("updated ", updateService)
     res.json({ success: true })
   } catch (error) {
     console.log("async err= ", error)
@@ -80,6 +78,36 @@ module.exports.sendServiceByLocation = async (req, res, next) => {
     res.json({ success: true, services: response })
   } catch (error) {
     console.log("async error in fetching service name", error)
+    res.json({ success: false })
+  }
+}
+
+module.exports.starService = async (req, res, next) => {
+  try {
+    const userid = req.userid
+    const { serviceId } = req.params
+    const service = await Service.findById(ObjectId(serviceId)).populate(
+      "userId"
+    )
+    const followersCount = await service.userId.followers.length
+    let starCount = await service.stars.length
+    let rating = starCount / followersCount
+    console.log("ser-", service)
+    if (service.stars.includes(ObjectId(userid))) {
+      await service.updateOne({ $pull: { stars: ObjectId(userid) } })
+      console.log("starred")
+      rating = Math.ceil((starCount - 1 / followersCount) * 10)
+      console.log("rating-", rating)
+      return res.json({ success: true, starred: false, rating })
+    } else {
+      await service.updateOne({ $push: { stars: ObjectId(userid) } })
+      console.log("unstarred", service)
+      rating = Math.ceil((starCount + 1 / followersCount) * 10)
+      console.log("rating-", rating, "star=", starCount)
+      return res.json({ success: true, starred: true, rating })
+    }
+  } catch (error) {
+    console.log("async error in star add", error)
     res.json({ success: false })
   }
 }

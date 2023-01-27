@@ -64,7 +64,8 @@ module.exports.sendHomefeeds = async (req, res, next) => {
   //   path: "following",
   //   populate: { path: "posts" },
   // })
-  const feeds = await Post.find({}).populate("userId")
+  const allfeeds = await Post.find({}).populate("userId")
+  const feeds = allfeeds.filter((feed) => feed.userId.isTerminated === false)
   feeds.forEach((item) => {
     item.userId.password = undefined
   })
@@ -93,15 +94,20 @@ module.exports.sendUserData = async (req, res, next) => {
     path: "posts",
   })
   let isFollowing
+  let isBlocked
   currentUser.following.includes(user._id)
     ? (isFollowing = true)
     : (isFollowing = false)
+
+  user.blockedList.includes(currentUser._id)
+    ? (isBlocked = true)
+    : (isBlocked = false)
 
   if (!user) return res.json({ success: false })
   user.password = undefined
   const posts = user.posts
 
-  res.json({ success: true, user, posts, isFollowing })
+  res.json({ success: true, user, posts, isFollowing, isBlocked })
 }
 
 module.exports.followUser = async (req, res, next) => {
