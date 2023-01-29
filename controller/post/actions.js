@@ -59,10 +59,28 @@ module.exports.sendCommnets = async (req, res, next) => {
       path: "comments",
       populate: { path: "userId" },
     })
-    allComments.comments[0].userId.password = undefined
+    // allComments.comments[0].userId.password = undefined
     res.json({ success: true, comments: allComments })
   } catch (error) {
     console.log("async error sending comments", error)
+    res.json({ success: false })
+  }
+}
+
+module.exports.deleteComment = async (req, res, next) => {
+  try {
+    const { postId, commentId } = req.params
+    const delComment = await Comment.findByIdAndDelete(ObjectId(commentId))
+    const removeComment = await Post.findByIdAndUpdate(ObjectId(postId), {
+      $pull: { comments: ObjectId(commentId) },
+    })
+    if (!delComment || !removeComment) {
+      console.log("delcomment=", delComment, "rmcmt=", removeComment)
+      return res.json({ success: false })
+    }
+    return res.json({ success: true })
+  } catch (error) {
+    console.log("async error deleting comments", error)
     res.json({ success: false })
   }
 }

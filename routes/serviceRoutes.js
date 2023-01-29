@@ -8,10 +8,12 @@ const {
   starService,
 } = require("../controller/service/serviceController")
 const { checkToken, verifyJwt } = require("../middleware")
+const { verifyJwtToken } = require("../middleware/authentication")
+const { serviceJoiValidation } = require("../middleware/validation")
 const router = express.Router()
 
 router.get("/", checkToken, verifyJwt, sendServices)
-router.post("/add", checkToken, verifyJwt, addService)
+router.post("/add", verifyJwtToken, serviceJoiValidation, addService)
 router.put("/:serviceId", checkToken, verifyJwt, updateService)
 router.put("/star/:serviceId", checkToken, verifyJwt, starService)
 router.get("/names", checkToken, verifyJwt, sendServiceName)
