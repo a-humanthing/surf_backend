@@ -13,6 +13,10 @@ const postSchema = new Schema(
       type: String,
       required: true,
     },
+    postType: {
+      type: String,
+      default: "image",
+    },
     location: {
       type: { type: String },
       coordinates: [Number],

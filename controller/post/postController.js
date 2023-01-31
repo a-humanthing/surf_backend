@@ -9,11 +9,12 @@ module.exports.viewPost = async (req, res, next) => {
 
 module.exports.createPost = async (req, res, next) => {
   const userid = req.userid
-  const { caption, imgUrl, id } = req.body
+  const { caption, imgUrl, fileType } = req.body
   const post = await Post.create({
     caption,
     image: imgUrl,
     userId: ObjectId(userid),
+    postType: fileType,
   })
   post.save()
   const user = await User.updateOne(

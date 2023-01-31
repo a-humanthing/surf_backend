@@ -13,14 +13,17 @@ const {
   sendUserPosts,
   sendHomefeeds,
   sendUserData,
-  followUser,
-  unfollowUser,
   sendUserById,
 } = require("../controller/user/data")
 const { checkToken, verifyJwt, sendOtpToEmail } = require("../middleware")
 const { sendSearchResults } = require("../controller/user/search")
 const { sendNotifications } = require("../controller/user/notification")
-const { blockUser, unBlockUser } = require("../controller/user/actions")
+const {
+  blockUser,
+  unBlockUser,
+  followUser,
+  unfollowUser,
+} = require("../controller/user/actions")
 const router = express.Router()
 
 router.post("/registerotp", sendOtp)
