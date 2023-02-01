@@ -64,12 +64,33 @@ module.exports.sendHomefeeds = async (req, res, next) => {
   //   path: "following",
   //   populate: { path: "posts" },
   // })
-  const allfeeds = await Post.find({}).populate("userId")
+  const allfeeds = await Post.find({})
+    .populate("userId")
+    .sort({ createdAt: -1 })
+    .limit(2)
   const feeds = allfeeds.filter((feed) => feed.userId.isTerminated === false)
   feeds.forEach((item) => {
     item.userId.password = undefined
   })
-  console.log("feeds = ", feeds)
+
+  // feeds.userId.password = undefined
+  res.json({ success: true, feeds })
+}
+
+module.exports.sendFeedsOnScroll = async (req, res, next) => {
+  const userid = req.userid
+  const { loadCount } = req.params
+  const loadfeeds = await Post.find({})
+    .populate("userId")
+    .sort({ createdAt: -1 })
+    .limit(2)
+    .skip(2 * loadCount)
+  console.log("count-", loadCount)
+  const feeds = loadfeeds.filter((feed) => feed.userId.isTerminated === false)
+  feeds.forEach((item) => {
+    item.userId.password = undefined
+  })
+
   // feeds.userId.password = undefined
   res.json({ success: true, feeds })
 }

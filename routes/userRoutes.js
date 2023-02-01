@@ -14,6 +14,7 @@ const {
   sendHomefeeds,
   sendUserData,
   sendUserById,
+  sendFeedsOnScroll,
 } = require("../controller/user/data")
 const { checkToken, verifyJwt, sendOtpToEmail } = require("../middleware")
 const { sendSearchResults } = require("../controller/user/search")
@@ -24,6 +25,7 @@ const {
   followUser,
   unfollowUser,
 } = require("../controller/user/actions")
+const { verifyJwtToken } = require("../middleware/authentication")
 const router = express.Router()
 
 router.post("/registerotp", sendOtp)
@@ -35,6 +37,7 @@ router.get("/profile", checkToken, sendProfileData)
 router.put("/profile", checkToken, verifyJwt, updateProfile)
 router.get("/posts", checkToken, verifyJwt, sendUserPosts)
 router.get("/homefeeds", checkToken, verifyJwt, sendHomefeeds)
+router.get("/loadfeeds/:loadCount", verifyJwtToken, sendFeedsOnScroll)
 router.get("/notifications", checkToken, verifyJwt, sendNotifications)
 router.get("/:username", checkToken, verifyJwt, sendUserData)
 router.get("/id/:userid", checkToken, verifyJwt, sendUserById)
