@@ -4,7 +4,9 @@ const { ObjectId } = require("../../util")
 module.exports.addStory = async (req, res, next) => {
   const userId = req.userid
   const { imgUrl, caption } = req.body
-  const story = Story({ userId, image: imgUrl, caption })
+  console.log("req.body=", req.body)
+  const story = new Story({ userId, image: imgUrl, caption })
+  console.log("story-", story)
   const save = await story.save()
   res.status(200).json({ success: true, data: save })
 }

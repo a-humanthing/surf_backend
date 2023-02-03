@@ -7,7 +7,9 @@ const path = require("path")
 const cors = require("cors")
 
 mongoose.set("strictQuery", false)
-mongoose.connect("mongodb://0.0.0.0:27017/surf")
+const mongodbUrl = process.env.MONGO_DB_URL
+//local url= "mongodb://0.0.0.0:27017/surf"
+mongoose.connect(mongodbUrl)
 const userRoutes = require("./routes/userRoutes")
 const postRoutes = require("./routes/postRoutes")
 const serviceRoutes = require("./routes/serviceRoutes")
