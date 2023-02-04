@@ -126,12 +126,24 @@ module.exports.updateProfile = async (req, res, next) => {
   try {
     const userid = req.userid
     const { fullName, userName, phone, dob, url } = req.body
-    const user = await User.findByIdAndUpdate(userid, {
-      fullName,
-      profilePic: url,
-      dob,
-      phone,
-    })
+    const userNameExists = await User.findOne({ userName })
+    let user
+    if (userNameExists) {
+      user = await User.findByIdAndUpdate(userid, {
+        fullName,
+        profilePic: url,
+        dob,
+        phone,
+      })
+    } else {
+      user = await User.findByIdAndUpdate(userid, {
+        fullName,
+        userName,
+        profilePic: url,
+        dob,
+        phone,
+      })
+    }
     console.log("user", user)
     res.json({ success: true })
   } catch (error) {
