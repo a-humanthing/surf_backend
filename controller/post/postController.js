@@ -43,8 +43,15 @@ module.exports.updatePost = async (req, res, next) => {
 module.exports.deletePost = async (req, res, next) => {
   try {
     const postid = req.params
+    const userid = req.userid
     console.log("postid-", postid)
-    const delpost = await Post.findByIdAndDelete(postid.postid)
+    const delpost = await Post.findByIdAndDelete(ObjectId(postid.postid))
+    const userCollection = await User.findById(ObjectId(userid))
+    console.log("user", userCollection)
+    const pullItem = await userCollection.updateOne({
+      $pull: { posts: ObjectId(postid.postid) },
+    })
+    console.log("del-", userCollection, "---", pullItem)
     res.json({ success: true })
   } catch (error) {
     console.log("async error", error)
